@@ -4,6 +4,7 @@ function Game(canvasElement) {
     this.intervalId = undefined;
     this.background = new Background(this.ctx);
     this.cannon = new Cannon(this.ctx);
+    this.octopus = new Octopus(this.ctx);
   }
   
   Game.prototype.start = function() {
@@ -18,11 +19,15 @@ function Game(canvasElement) {
   Game.prototype.drawAll = function(action) {
     this.background.draw();
     this.cannon.draw();
+    this.octopus.drawTroopers();
+
+    //this.octopus.draw();
   };
   
   Game.prototype.moveAll = function(action) {
     this.background.move(); 
     this.cannon.move();
+    this.octopus.move();
   };
   
   Game.prototype.checkGameOver = function() {

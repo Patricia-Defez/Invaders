@@ -31,7 +31,6 @@ function Cannon(ctx) {
       case KEY_LEFT:
         this.vx = -10;
         break;
-      
     }
   };
   
@@ -46,8 +45,6 @@ function Cannon(ctx) {
       case KEY_SPACE:
         this.shoot();
         break;
-
-      
     }
   };
    
@@ -59,32 +56,29 @@ function Cannon(ctx) {
       this.y,
       this.w,
       this.h
-    )
+    );
 
     this.laserShoots.forEach(function(laserShoot) {
       laserShoot.draw();
     })
-    
+
   };
   
   Cannon.prototype.move = function() {
   
     this.x += this.vx;
-  
-    if (this.x > this.ctx.canvas.width - this.w || this.x <= 0 ){
-      this.vx = 0;
-      
-     }
 
-     this.laserShoots.forEach(function(laserShoot) {
+    if (this.x > this.ctx.canvas.width - this.w || this.x <= 0){
+      this.vx = 0;
+    }
+
+    this.laserShoots.forEach(function(laserShoot) {
       laserShoot.move();
     })
-
   };
 
   Cannon.prototype.shoot = function() {
-    var laserShoot = new Laser(this.ctx, this.x + this.w /2, this.y + this.h);
-  
+    var laserShoot = new Laser(this.ctx, this.x + this.w /2, this.y - this.h);
     this.laserShoots.push(laserShoot);
   };
   

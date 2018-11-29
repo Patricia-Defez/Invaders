@@ -50,6 +50,7 @@ function Cannon(ctx) {
    
   
   Cannon.prototype.draw = function() {
+    // console.log(this.x)
     this.ctx.drawImage(
       this.img,
       this.x,

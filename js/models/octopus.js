@@ -1,27 +1,32 @@
-function Octopus(ctx) {
+function Octopus(ctx, x, y) {
     this.ctx = ctx;
     this.img = new Image();
     this.img.src = "img/octopus.png";
    
   
-    this.x = 50;
-    this.y = 50;
+    this.x = x;
+    this.x0 = x;
+    this.y = y;
+    this.y0 = y;
+
     this.w = 50;
     this.h = 50;
 
 
     
-    this.vx = 0;
-    this.vy = 0;
+    this.vx = this.w;
+    this.vy = this.h;
 
     this.img.frames = 2;
     this.img.frameIndex = 0;
 
     this.drawCount = 0;
 
-    this.troopers = [];
-}
+    this.arsenal = [];
 
+    
+}
+console.log(arsenal);
 
 Octopus.prototype.draw = function() {
     this.drawCount++;
@@ -39,10 +44,15 @@ Octopus.prototype.draw = function() {
     );
 
   
-    if (this.drawCount % 20 === 0) {
+    if (this.drawCount % 30 === 0) {
       this.drawCount = 0;
       this.animate();
+    
     }
+
+    this.arsenal.forEach(function(missile) {
+        missile.draw();
+    })
 };
 
 Octopus.prototype.troop = function() {
@@ -53,34 +63,33 @@ Octopus.prototype.troop = function() {
     }
 }
 
-Octopus.prototype.drawTroopers = function(){
-    this.troopers.forEach(function() {
-        this.draw();
+Octopus.prototype.move = function() { 
+
+    if (this.drawCount % 40 === 0) {
+        this.drawCount = 0;
+
+        this.x += this.vx;
+
+        if (this.x >= (this.x0 + 700) || this.x <= this.x0 - 150) {
+            this.vx *= -1;
+            this.y += this.vy;
+        }
+    }
+
+    this.arsenal.forEach(function(missile) {
+        missile.move();
+       
     })
-}
+};
 
-// Octopus.prototype.drawTroopers = function(){
-//     for(var i=0; i<this.troopers.length; i++){
-//         this.troopers[i].
-//     }
-
-// }
-
-Octopus.prototype.move = function() {
-
-    this.y += this.vy;
-
-//         if (this.x > this.ctx.canvas.width - this.w || this.x <= 0 ){
-//           this.vx = 0;
-          
-//         }
-
- };
- Octopus.prototype.animate = function() {
+Octopus.prototype.animate = function() {
     if(++this.img.frameIndex > 1){
       this.img.frameIndex = 0;
     }
   
-  
-  
-  };
+};
+
+Octopus.prototype.shoot = function() {
+    var missile = new Bomb(this.ctx, this.x + this.w /2, this.y + this.h);
+    this.arsenal.push(missile);
+}; 

@@ -12,6 +12,8 @@ function Cannon(ctx) {
   this.vx = 0;
   this.vy = 0;
 
+  this.shootV = -10;
+
   this.laserShoots = [];
 
   this.setListeners();
@@ -79,8 +81,15 @@ Cannon.prototype.move = function () {
   })
 };
 
+Cannon.prototype.collideWith = function (obstacle) {
+  return this.x < obstacle.x + obstacle.w &&
+    this.x + this.w > obstacle.x &&
+    this.y < obstacle.y + obstacle.h &&
+    this.h + this.y > obstacle.y
+}
+
 Cannon.prototype.shoot = function () {
-  var laserShoot = new Laser(this.ctx, this.x + this.w / 2, this.y - this.h);
+  var laserShoot = new Laser(this.ctx, this.x + this.w / 2, this.y - this.h, this.shootV, "yellow");
   this.laserShoots.push(laserShoot);
 
 };

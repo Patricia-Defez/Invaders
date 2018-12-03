@@ -20,13 +20,9 @@ function Octopus(ctx, x, y) {
     this.img.frames = 2;
     this.img.frameIndex = 0;
 
-    this.drawCount = 0;
-
-    // this.arsenal = [];
-
-    
+    this.drawCount = 0;    
 }
-// console.log(arsenal);
+
 
 Octopus.prototype.draw = function() {
     this.drawCount++;
@@ -90,7 +86,6 @@ Octopus.prototype.animate = function() {
   
 };
 
-// Octopus.prototype.shoot = function() {
-//     var missile = new Bomb(this.ctx, this.x + this.w /2, this.y + this.h);
-//     this.arsenal.push(missile);
-// }; 
+Octopus.prototype.shoot = function() {
+    return new Laser(this.ctx, this.x + this.w /2, this.y + this.h, 10, "red");
+}; 

@@ -1,4 +1,4 @@
-function Laser(ctx, x, y) {
+function Laser(ctx, x, y, vy, color) {
   this.ctx = ctx;
 
 
@@ -8,8 +8,11 @@ function Laser(ctx, x, y) {
   this.w = 2;
   this.h = 30;
 
+  
+  this.color = color;
+
   this.vx = 0;
-  this.vy = -10;
+  this.vy = vy;
 }
 
 Laser.prototype.collideWith = function (invader) {
@@ -20,13 +23,18 @@ Laser.prototype.collideWith = function (invader) {
 }
 
 Laser.prototype.draw = function () {
+  this.ctx.save();
   this.ctx.beginPath();
+  
   this.ctx.lineWidth = "1";
-  this.ctx.strokeStyle = "yellow";
+  this.ctx.strokeStyle = this.color;
   this.ctx.rect(this.x, this.y, this.w, this.h);
   this.ctx.stroke();
+  
+  this.ctx.closePath();
+  this.ctx.restore();
 }
 
 Laser.prototype.move = function () {
-  this.y += this.vy;
+  this.y += this.vy ;
 }

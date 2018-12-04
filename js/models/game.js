@@ -8,9 +8,11 @@ function Game(canvasElement) {
     this.troopers = [];
     this.troopersArsenal = [];
 
+    this.score = 0;
+
     this.drawCount = 0;
 
-    this.addOctopuses();
+    this.addEnemies();
 }
 
 Game.prototype.start = function () {
@@ -18,22 +20,35 @@ Game.prototype.start = function () {
         this.clear();
         this.drawAll();
         this.shootDetection();
+        this.drawScore();
         this.checkGameOver();
         this.moveAll();
         this.invaderShoot();
     }.bind(this), DRAW_INTERVAL_MS);
 };
 
-Game.prototype.addOctopuses = function () {
-    for (var i = 0; i < 2; i++) {
+Game.prototype.addEnemies = function () {
+    for (var i = 0; i < 1; i++) {
+        var row = [];
+        for (var j = 0; j < 10; j++) {
+            row.push(new Squid(this.ctx, 200 + j * 75, 50 + i * 75));
+        }
+        this.troopers.push(row);
+    }
+    for (var i = 1; i < 3; i++) {
+        var row = [];
+        for (var j = 0; j < 10; j++) {
+            row.push(new Crab(this.ctx, 200 + j * 75, 50 + i * 75));
+        }
+        this.troopers.push(row);
+    }
+    for (var i = 3; i < 5; i++) {
         var row = [];
         for (var j = 0; j < 10; j++) {
             row.push(new Octopus(this.ctx, 200 + j * 75, 50 + i * 75));
         }
-
         this.troopers.push(row);
     }
-   
 };
 
 Game.prototype.getRandomTrooper = function() {
@@ -71,12 +86,19 @@ Game.prototype.shootDetection = function () {
             row.forEach(function (invader) {
                 if (shoot.collideWith(invader) && invader.alive) {
                     invader.alive = false;
+                    this.score += 30;
                     this.cannon.deleteShoot(shoot);
                 }
             }.bind(this));
         }.bind(this));
     }.bind(this));
 };
+
+Game.prototype.drawScore = function () {
+    this.ctx.font = "16px Arial";
+    this.ctx.fillStyle = "white";
+    this.ctx.fillText("Score: "+this.score, 8, 20);
+}
 
 Game.prototype.drawAll = function (action) {
     this.background.draw();

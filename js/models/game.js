@@ -4,6 +4,7 @@ function Game(canvasElement) {
     this.intervalId = undefined;
     this.background = new Background(this.ctx);
     this.cannon = new Cannon(this.ctx);
+    this.ufo = undefined;
 
     this.troopers = [];
     this.troopersArsenal = [];
@@ -24,6 +25,13 @@ Game.prototype.start = function () {
         this.checkGameOver();
         this.moveAll();
         this.invaderShoot();
+
+        if (this.drawCount % 300 === 0) {
+            if (!this.ufo) {
+                this.ufo = new Ufo(this.ctx);
+            }
+            this.drawCount = 0;
+        }
     }.bind(this), DRAW_INTERVAL_MS);
 };
 
@@ -71,7 +79,6 @@ Game.prototype.invaderShoot = function () {
             console.log('Shooting with', )
             this.troopersArsenal.push(trooper.shoot());
         }
-        this.drawCount = 0;
     } 
 };
 // Game.prototype.deleteMissile = function(missile) {
@@ -102,6 +109,9 @@ Game.prototype.drawScore = function () {
 
 Game.prototype.drawAll = function (action) {
     this.background.draw();
+    if (this.ufo) {
+        this.ufo.draw();
+    }
     this.cannon.draw();
     this.troopers.forEach(function (row) {
         row.forEach(function (octopus) {
@@ -111,6 +121,7 @@ Game.prototype.drawAll = function (action) {
     this.troopersArsenal.forEach(function(missile) {
         missile.draw();
     });
+
     this.drawCount++;
 };
 
@@ -128,6 +139,9 @@ Game.prototype.moveTroopers = function () {
 Game.prototype.moveAll = function (action) {
     this.background.move();
     this.cannon.move();
+    if (this.ufo) {
+        this.ufo.move();
+    }
     this.moveTroopers();
     this.troopersArsenal.forEach(function(missile) {
         missile.move();

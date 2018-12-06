@@ -1,6 +1,6 @@
 function Enemy(ctx, x, y, sprite, spriteHFrames, w, h) {
-    this.ctx = ctx;   
-  
+    this.ctx = ctx;
+
     this.x = x;
     this.x0 = x;
     this.y = y;
@@ -10,7 +10,7 @@ function Enemy(ctx, x, y, sprite, spriteHFrames, w, h) {
     this.h = h || 50;
 
     this.alive = true;
-    
+
     this.vx = this.w;
     this.vy = this.h;
 
@@ -20,37 +20,36 @@ function Enemy(ctx, x, y, sprite, spriteHFrames, w, h) {
     this.img.frames = spriteHFrames || 2;
     this.img.frameIndex = 0;
 
-    this.drawCount = 0;    
+    this.drawCount = 0;
 }
 
 
-Enemy.prototype.draw = function() {
+Enemy.prototype.draw = function () {
     this.drawCount++;
 
     if (this.alive) {
         this.ctx.drawImage(
-        this.img,
-        this.img.frameIndex * Math.floor(this.img.width / this.img.frames),
-        0,
-        this.img.width / this.img.frames,
-        this.img.height,
-        this.x,
-        this.y,
-        this.w,
-        this.h
+            this.img,
+            this.img.frameIndex * Math.floor(this.img.width / this.img.frames),
+            0,
+            this.img.width / this.img.frames,
+            this.img.height,
+            this.x,
+            this.y,
+            this.w,
+            this.h
         );
     }
-  
+
     if (this.drawCount % 30 === 0) {
-      this.drawCount = 0;
-      this.animate();
-    
-    }   
+        this.drawCount = 0;
+        this.animate();
+
+    }
 };
 
 
-Enemy.prototype.move = function() { 
-
+Enemy.prototype.move = function () {
     if (this.drawCount % 40 === 0) {
         this.drawCount = 0;
 
@@ -62,15 +61,20 @@ Enemy.prototype.move = function() {
         }
     }
 
-  
 };
 
-Enemy.prototype.animate = function() {
-    if (++this.img.frameIndex > 1){
-      this.img.frameIndex = 0;
+Enemy.prototype.animate = function () {
+    if (++this.img.frameIndex > 1) {
+        this.img.frameIndex = 0;
     }
 };
 
-Enemy.prototype.shoot = function() {
-    return new Laser(this.ctx, this.x + this.w /2, this.y + this.h, 10, "red");
+Enemy.prototype.shoot = function () {
+    return new Laser(this.ctx, this.x + this.w / 2, this.y + this.h, 10, "red");
 }; 
+
+Enemy.prototype.deleteShoot = function(shoot) {
+    this.laserShoots = this.laserShoots.filter(function(s) {
+      return s !== shoot;
+    })
+};

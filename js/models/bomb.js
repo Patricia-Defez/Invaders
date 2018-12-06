@@ -1,14 +1,10 @@
 function Bomb(ctx, x, y, color) {
-    this.ctx = ctx;
-
-    this.color = color;
-    this.r = 3;
-    this.x = x || 100;
-    this.y = y || 100;
-
-    this.vx = 0;
-    this.vy = 10;
+    Laser.call(this, ctx, x, y, 10, color)
+    this.r = 5;
 }
+
+Bomb.prototype = Object.create(Laser.prototype);
+Bomb.prototype.constructor = Bomb;
 
 Bomb.prototype.draw = function () {
     this.ctx.save();
@@ -18,9 +14,4 @@ Bomb.prototype.draw = function () {
     this.ctx.fill();
     this.ctx.closePath();
     this.ctx.restore();
-}
-
-Bomb.prototype.move = function () {
-
-    this.y += this.vy;
 }

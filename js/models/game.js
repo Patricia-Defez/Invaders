@@ -6,8 +6,11 @@ function Game(canvasElement) {
     this.cannon = new Cannon(this.ctx);
     this.ufo = undefined;
 
+    this.backgroundSong = new Audio('audio/backgroundSong.mp3'); 
+
     this.troopers = [];
     this.troopersArsenal = [];
+    // this.ufoArsenal = [];
 
     this.score = 0;
 
@@ -15,6 +18,8 @@ function Game(canvasElement) {
 
     this.addEnemies();
 }
+
+
 
 Game.prototype.start = function () {
     this.intervalId = setInterval(function () {
@@ -25,14 +30,23 @@ Game.prototype.start = function () {
         this.checkGameOver();
         this.moveAll();
         this.invaderShoot();
-
+        // this.cleanArsenal();
         if (this.drawCount % 300 === 0) {
             if (!this.ufo) {
                 this.ufo = new Ufo(this.ctx);
+               
             }
             this.drawCount = 0;
         }
     }.bind(this), DRAW_INTERVAL_MS);
+};
+
+Game.prototype.backgroundSong = function (){
+    this.backgroundSong.addEventListener('ended', function() {
+        this.currentTime = 0;
+        this.play();
+    }, false);
+    this.backgroundSong.play();
 };
 
 Game.prototype.addEnemies = function () {
@@ -80,12 +94,25 @@ Game.prototype.invaderShoot = function () {
             this.troopersArsenal.push(trooper.shoot());
         }
     } 
+
+    if (this.drawCount % 100 === 0) {
+        if (this.ufo) {
+            var burst = this.ufo.shoot();
+            burst.forEach(function (bomb) {
+                this.troopersArsenal.push(bomb);
+            }.bind(this));
+        }
+    }
+    
 };
-// Game.prototype.deleteMissile = function(missile) {
-//     this.troopersArsenal = this.troopersArsenal.filter(function(s) {
-//       return s !== missile;
-//     })
-// };    
+Game.prototype.cleanArsenal = function() {
+    this.troopersArsenal.forEach(function(bomb){
+        if(bomb.y + bomb.h > this.ctx.canvas.height){
+            this.enemy.deleteShoot(bomb);
+        }
+    }.bind(this));
+    
+};    
 
 Game.prototype.shootDetection = function () { 
     this.cannon.laserShoots.forEach(function (shoot) {
@@ -98,6 +125,15 @@ Game.prototype.shootDetection = function () {
                 }
             }.bind(this));
         }.bind(this));
+    }.bind(this));
+    this.cannon.laserShoots.forEach(function (shoot) {
+        if (this.ufo ) {
+            if (shoot.collideWith(this.ufo)) {
+                this.ufo = null;
+                this.score += 500;
+                this.cannon.deleteShoot(shoot);
+            }
+        }
     }.bind(this));
 };
 
@@ -162,6 +198,7 @@ Game.prototype.checkGameOver = function () {
             this.gameOver();
         }
     }.bind(this));
+    
 
 };
 

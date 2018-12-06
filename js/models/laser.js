@@ -1,13 +1,11 @@
 function Laser(ctx, x, y, vy, color) {
   this.ctx = ctx;
 
-
   this.x = x || 800;
   this.y = y || 800;
 
   this.w = 2;
   this.h = 30;
-
   
   this.color = color;
 
@@ -36,5 +34,5 @@ Laser.prototype.draw = function () {
 }
 
 Laser.prototype.move = function () {
-  this.y += this.vy ;
+  this.y += this.vy;
 }

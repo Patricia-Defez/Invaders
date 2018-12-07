@@ -27,6 +27,7 @@ Game.prototype.start = function () {
         this.drawAll();
         this.shootDetection();
         this.drawScore();
+        this.cleanArsenal();
         this.checkGameOver();
         this.moveAll();
         this.invaderShoot();
@@ -111,7 +112,11 @@ Game.prototype.cleanArsenal = function() {
             this.enemy.deleteShoot(bomb);
         }
     }.bind(this));
-    
+    this.cannon.laserShoots.forEach(function (shoot){
+        if(shoot.x - shoot.h < 0){
+            this.cannon.deleteShoot(shoot);
+        }
+    }.bind(this));
 };    
 
 Game.prototype.shootDetection = function () { 

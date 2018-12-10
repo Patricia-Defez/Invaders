@@ -3,7 +3,11 @@ function Cannon(ctx) {
   this.img = new Image();
   this.img.src = "img/Laser_Cannon.png";
 
-  //this.shootAudio = new sound("audio/shoot.wav");
+ 
+
+  
+  this.shootSound = document.getElementsByClassName("soundEfect")[0];
+ 
 
   this.x = 800;
   this.y = 800;
@@ -15,6 +19,7 @@ function Cannon(ctx) {
 
   this.shootV = -10;
 
+  
   this.laserShoots = [];
 
   this.setListeners();
@@ -52,19 +57,22 @@ Cannon.prototype.onKeyUp = function (e) {
 
 
 Cannon.prototype.draw = function () {
-  // console.log(this.x)
+ 
+
   this.ctx.drawImage(
     this.img,
     this.x,
     this.y,
     this.w,
     this.h
+    
   );
 
   this.laserShoots.forEach(function (laserShoot) {
     laserShoot.draw();
   })
 
+ 
 
 };
 
@@ -93,10 +101,17 @@ Cannon.prototype.collideWith = function (obstacle) {
     this.h + this.y > obstacle.y
 }
 
+Cannon.prototype.play = function(){
+  this.shootSound.play();
+};
+
+
+
 Cannon.prototype.shoot = function () {
   var laserShoot = new Laser(this.ctx, this.x + this.w / 2, this.y - this.h, this.shootV, "yellow");
   this.laserShoots.push(laserShoot);
-  //this.shootAudio.play();
+  // this.shootSound.play();
+  this.play();
 };
 
 Cannon.prototype.deleteShoot = function(shoot) {

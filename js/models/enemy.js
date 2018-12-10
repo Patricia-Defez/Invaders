@@ -73,8 +73,4 @@ Enemy.prototype.shoot = function () {
     return new Laser(this.ctx, this.x + this.w / 2, this.y + this.h, 10, "red");
 }; 
 
-Enemy.prototype.deleteShoot = function(shoot) {
-    this.laserShoots = this.laserShoots.filter(function(s) {
-      return s !== shoot;
-    })
-};
+
